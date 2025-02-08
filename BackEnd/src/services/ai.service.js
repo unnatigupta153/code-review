@@ -39,11 +39,13 @@ const model = genAI.getGenerativeModel({
                 Output Example:
 
                 ❌ Bad Code:
-
-                function fetchData() {
+                \`\`\`javascript
+                                function fetchData() {
                     let data = fetch('/api/data').then(response => response.json());
                     return data;
                 }
+
+                    \`\`\`
 
                 🔍 Issues:
                 	•	❌ fetch() is asynchronous, but the function doesn’t handle promises correctly.
@@ -51,6 +53,7 @@ const model = genAI.getGenerativeModel({
 
                 ✅ Recommended Fix:
 
+                        \`\`\`javascript
                 async function fetchData() {
                     try {
                         const response = await fetch('/api/data');
@@ -61,6 +64,7 @@ const model = genAI.getGenerativeModel({
                         return null;
                     }
                 }
+                   \`\`\`
 
                 💡 Improvements:
                 	•	✔ Handles async correctly using async/await.
@@ -78,6 +82,8 @@ const model = genAI.getGenerativeModel({
 
 async function generateContent(prompt) {
     const result = await model.generateContent(prompt);
+
+    console.log(result.response.text())
 
     return result.response.text();
 
