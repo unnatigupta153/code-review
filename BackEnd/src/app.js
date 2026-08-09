@@ -12,7 +12,13 @@ const RATE_LIMIT = 30
 const RATE_WINDOW_MS = 60 * 1000
 
 app.use(cors({
-    origin: allowedOrigins,
+    origin: (origin, callback) => {
+        const isVercelDeployment = origin && /^https:\/\/code-review(?:-[a-z0-9-]+)?\.vercel\.app$/.test(origin)
+        if (!origin || allowedOrigins.includes(origin) || isVercelDeployment) {
+            return callback(null, true)
+        }
+        callback(new Error('Origin is not allowed by CORS'))
+    },
     methods: ['GET', 'POST'],
 }))
 

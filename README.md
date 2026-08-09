@@ -2,6 +2,14 @@
 
 An AI-powered code review application built with React, Express, and Gemini.
 
+## Live demo
+
+Live demo: [code-review-unnatigupta153-u-dc94.vercel.app](https://code-review-unnatigupta153-u-dc94.vercel.app)
+
+The Vercel deployment currently has Vercel Deployment Protection enabled, so you
+must be signed in to the Vercel account to open it. Disable Deployment Protection
+in Vercel project settings if the demo should be public for everyone.
+
 ## Local URLs
 
 After starting both applications, open:
