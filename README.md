@@ -39,7 +39,7 @@ npm install
 npm run dev
 ```
 
-The frontend sends review requests to `http://localhost:3000` by default. Set `VITE_API_URL` in `Frontend/.env` when using a different backend URL.
+The frontend sends review requests to `/api` by default. Set `VITE_API_URL` in `Frontend/.env` when using a different backend URL.
 
 ## Vercel environment setup
 
