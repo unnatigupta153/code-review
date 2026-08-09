@@ -47,6 +47,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/ai', aiRoutes)
+// Vercel keeps the /api prefix when invoking the serverless function.
+app.use('/api/ai', aiRoutes)
 
 app.use((error, req, res, next) => {
     if (error.type === 'entity.too.large') {

@@ -40,3 +40,7 @@ npm run dev
 ```
 
 The frontend sends review requests to `http://localhost:3000` by default. Set `VITE_API_URL` in `Frontend/.env` when using a different backend URL.
+
+## Vercel environment setup
+
+For the deployed API, add `GEMINI_API_KEY` and `GEMINI_MODEL` to the Vercel project's Production Environment Variables, then redeploy. The local `BackEnd/.env` file is intentionally ignored and is never committed.
