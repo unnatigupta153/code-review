@@ -3,15 +3,23 @@ const aiService = require("../services/ai.service")
 
 module.exports.getReview = async (req, res) => {
 
-    const code = req.body.code;
+    const code = typeof req.body?.code === "string" ? req.body.code.trim() : "";
 
     if (!code) {
-        return res.status(400).send("Prompt is required");
+        return res.status(400).json({ error: "Code is required" });
+    }
+    if (code.length > 50000) {
+        return res.status(413).json({ error: "Code must be 50,000 characters or less" });
     }
 
-    const response = await aiService(code);
-
-
-    res.send(response);
+    try {
+        const response = await aiService(code);
+        res.json({ review: response });
+    } catch (error) {
+        console.error("Code review failed:", error.message);
+        res.status(error.statusCode || 500).json({
+            error: error.statusCode === 503 ? error.message : "Unable to generate a code review"
+        });
+    }
 
 }

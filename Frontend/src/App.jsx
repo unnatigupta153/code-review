@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import "prismjs/themes/prism-tomorrow.css"
 import Editor from "react-simple-code-editor"
 import prism from "prismjs"
@@ -9,20 +9,30 @@ import axios from 'axios'
 import './App.css'
 
 function App() {
-  const [ count, setCount ] = useState(0)
   const [ code, setCode ] = useState(` function sum() {
   return 1 + 1
 }`)
 
   const [ review, setReview ] = useState(``)
-
-  useEffect(() => {
-    prism.highlightAll()
-  }, [])
+  const [ loading, setLoading ] = useState(false)
+  const [ error, setError ] = useState('')
 
   async function reviewCode() {
-    const response = await axios.post('http://localhost:3000/ai/get-review', { code })
-    setReview(response.data)
+    if (!code.trim()) {
+      setError('Please enter some code to review.')
+      return
+    }
+    setLoading(true)
+    setError('')
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000'
+      const response = await axios.post(`${apiUrl}/ai/get-review`, { code })
+      setReview(response.data.review || response.data)
+    } catch (requestError) {
+      setError(requestError.response?.data?.error || 'Unable to review code. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -45,11 +55,16 @@ function App() {
               }}
             />
           </div>
-          <div
+          <button
+            type="button"
             onClick={reviewCode}
-            className="review">Review</div>
+            className="review"
+            disabled={loading}
+          >{loading ? 'Reviewing...' : 'Review'}</button>
         </div>
         <div className="right">
+          {error && <p className="error" role="alert">{error}</p>}
+          {!review && !error && <p className="placeholder">Your review will appear here.</p>}
           <Markdown
 
             rehypePlugins={[ rehypeHighlight ]}
